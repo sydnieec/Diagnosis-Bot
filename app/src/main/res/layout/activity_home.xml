@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    android:background="#f7e6c8"
+    android:theme="@style/AppTheme"
+
+    <ListView
+        android:id="@+id/MessageListView"
+        style="@style/Widget.AppCompat.Light.ListView.DropDown"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:stackFromBottom="false"
+        android:transcriptMode="normal"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/message_edit"
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Enter message.."
+        app:layout_constraintBottom_toBottomOf="@+id/send_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.084"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/send_button"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/send_button"
+        android:layout_width="66dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/colorAccent"
+        android:text="SEND"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/textView6"
+        app:layout_constraintVertical_bias="1.0" />
+
+</android.support.constraint.ConstraintLayout>
