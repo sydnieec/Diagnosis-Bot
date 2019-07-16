@@ -30,6 +30,8 @@ public class AgeActivity extends AppCompatActivity {
                 i.putExtra("sex", sex);
                 i.putExtra("age", string_age);
                 startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+
 
             }});
     }

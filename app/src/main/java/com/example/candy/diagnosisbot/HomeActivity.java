@@ -76,6 +76,7 @@ public class HomeActivity extends AppCompatActivity {
                Intent i = new Intent(HomeActivity.this, AgeActivity.class);
                 i.putExtra("sex", "female");
                 startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
 
             }});
         buttonmale.setOnClickListener(new Button.OnClickListener(){
@@ -85,6 +86,7 @@ public class HomeActivity extends AppCompatActivity {
                     Intent i = new Intent(HomeActivity.this, AgeActivity.class);
                     i.putExtra("sex", "male");
                     startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
 
             }});
 
