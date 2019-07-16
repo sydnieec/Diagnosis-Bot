@@ -14,6 +14,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 
 import com.android.volley.toolbox.StringRequest;
@@ -59,15 +60,15 @@ public class HomeActivity extends AppCompatActivity {
         // String computedHash = HMAC.hmacDigest(login_url,secret_key,"HmacMD5");
       //  sendRequestAndPrintResponse(api_key,computedHash);
       ///  sendRequestandPrintSymptoms(token_id);
-        sendRequestAndPrintinfo();
+    //    sendRequestAndPrintinfo();
        // sendRequestAndPrintsymptoms();
-        sendRequestandprinttheDiagnosis();
+      //  sendRequestandprinttheDiagnosis();
 
 
     }private void sendRequestAndPrintsymptoms() {
          String symptoms_url="https://api.infermedica.com/v2/symptoms";
         mRequestQueuesymptoms = Volley.newRequestQueue(this);
-        stringRequestsymptoms = new StringRequest(Request.Method.GET, symptoms_url, new Response.Listener<String>() {
+        stringRequestsymptoms = new StringRequest(Request.Method.GET, symptoms_url, new Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -101,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
     } private void sendRequestAndPrintinfo() {
         String info_url="https://api.infermedica.com/v2/info";
         mRequestQueue = Volley.newRequestQueue(this);
-        stringRequest = new StringRequest(Request.Method.GET, info_url, new Response.Listener<String>() {
+        stringRequest = new StringRequest(Request.Method.GET, info_url, new Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -139,22 +140,24 @@ public class HomeActivity extends AppCompatActivity {
 
 
         String diagnosis_url ="https://api.infermedica.com/v2/diagnosis";
+        String parse_url="https://api.infermedica.com/v2/parse";
         JSONObject data = new JSONObject();
+        JSONObject datatest= new JSONObject();
         try {
             data.put("sex", "female");
-            data.put("age", 23);
+            data.put("age",  25);
             JSONArray evidence_array = new JSONArray();
             JSONObject id = new JSONObject();
             JSONObject id2 = new JSONObject();
             JSONObject id3 = new JSONObject();
-
+            datatest.put("text", "I have diabetes");
 
             ///creating json for example evidence
                 id.put("id", "s_47");
                 id.put("choice_id","present");
-                id.put("initial",true);
+               id.put("initial",true);
                 id2.put("id", "s_22");
-                id2.put("choice_id","present");
+               id2.put("choice_id","present");
                 id2.put("initial",true);
                 id3.put("id", "p_81");
                 id3.put("choice_id","absent");
@@ -201,19 +204,19 @@ public class HomeActivity extends AppCompatActivity {
                 HashMap headers = new HashMap();
                 headers.put("App-Id", appid);
                 headers.put("App-Key", appkey);
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
+           //     headers.put("Content-Type", "application/json");
+                return headers; }
         };
 // Adding the request to the queue along with a unique string tag
       //  MyApplication.getInstance().addToRequestQueue(jsonObjectReq, "headerRequest");
 // Adding the request to the queue along with a unique string tag
-       // HomeActivity.getInstance().addToRequestQueue(jsonObjReq, "postRequest");
+    //    HomeActivity.getInstance(this).addToRequestQueue(jsonObjReq, "postRequest");
         mRequestQueuetheDiagnosis.add(jsonObjReq);
+        Log.i(TAG,datatest.toString());
     }private void sendRequestAndPrintDiagnosis() {
         String diagnosis_url ="https://api.infermedica.com/v2/diagnosis";
         mRequestQueueDiagnosis = Volley.newRequestQueue(this);
-        stringRequestDiagnosis = new StringRequest(Request.Method.POST, diagnosis_url, new Response.Listener<String>() {
+        stringRequestDiagnosis = new StringRequest(Request.Method.POST, diagnosis_url, new Listener<String>() {
 
             @Override
             public void onResponse(String response) {
