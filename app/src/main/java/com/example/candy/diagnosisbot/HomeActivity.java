@@ -15,9 +15,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,94 +31,217 @@ import java.util.List;
 import java.util.Map;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = HomeActivity.class.getName();
 
     private String login_url = "https://sandbox-authservice.priaid.ch/login";
-    private String symptom_url="https://sandbox-healthservice.priaid.ch/symptoms";
     private  String  api_key = "sydnie.chau@gmail.com";
-    private String secret_key = "Tk9y7Y3GtSa4i5M6A";
-    private String token_id="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InN5ZG5pZS5jaGF1QGdtYWlsLmNvbSIsInJvbGUiOiJVc2VyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc2lkIjoiNTQwMSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvdmVyc2lvbiI6IjIwMCIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbGltaXQiOiI5OTk5OTk5OTkiLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL21lbWJlcnNoaXAiOiJQcmVtaXVtIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9sYW5ndWFnZSI6ImVuLWdiIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9leHBpcmF0aW9uIjoiMjA5OS0xMi0zMSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcHN0YXJ0IjoiMjAxOS0wNy0xNCIsImlzcyI6Imh0dHBzOi8vc2FuZGJveC1hdXRoc2VydmljZS5wcmlhaWQuY2giLCJhdWQiOiJodHRwczovL2hlYWx0aHNlcnZpY2UucHJpYWlkLmNoIiwiZXhwIjoxNTYzMTY2MzMwLCJuYmYiOjE1NjMxNTkxMzB9.I8zCl2C5MNYc0OBJ0EedQhnpc84xQdkPXvQln2zRRAE";
+    private String appid= "76a0a013";
+    private String appkey="47d95003e43862338850d1f7b8cd62ec";
+   // private String secret_key = "Tk9y7Y3GtSa4i5M6A";
+    private RequestQueue mRequestQueue;
+    private StringRequest stringRequest;
+    private RequestQueue mRequestQueueDiagnosis;
+    private StringRequest stringRequestDiagnosis;
+    private RequestQueue mRequestQueuesymptoms;
+    private StringRequest stringRequestsymptoms;
+    private RequestQueue mRequestQueuetheDiagnosis;
+    private StringRequest stringRequesttheDiagnosis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-         String computedHash = HMAC.hmacDigest(login_url,secret_key,"HmacMD5");
-
-        sendRequestAndPrintResponse(api_key,computedHash);
+        // String computedHash = HMAC.hmacDigest(login_url,secret_key,"HmacMD5");
+      //  sendRequestAndPrintResponse(api_key,computedHash);
       ///  sendRequestandPrintSymptoms(token_id);
-    }
+        sendRequestAndPrintinfo();
+       // sendRequestAndPrintsymptoms();
+        sendRequestandprinttheDiagnosis();
 
-    private void sendRequestAndPrintResponse(final String api_key, final String computedHash) {
-         String request_url="https://sandbox-authservice.priaid.ch/login";
 
-        StringRequest stringrequest = new StringRequest(Request.Method.POST, lo, new Response.Listener<String>() {
+    }private void sendRequestAndPrintsymptoms() {
+         String symptoms_url="https://api.infermedica.com/v2/symptoms";
+        mRequestQueuesymptoms = Volley.newRequestQueue(this);
+        stringRequestsymptoms = new StringRequest(Request.Method.GET, symptoms_url, new Response.Listener<String>() {
+
             @Override
             public void onResponse(String response) {
-                Log.i("Volley Result", "" + response); //the response contains the result from the server, a json string or any other object returned by your server
+                try {
+                    JSONObject obj = new JSONObject(response);
+           //         Log.i(TAG,"hi" + obj.toString());
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i(TAG, "Error: " + error.toString());
+            }
+        }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("App-Id", appid);
+                params.put("App-Key", appkey);
+
+                return params;
+            }
+        };
+        mRequestQueuesymptoms.add(stringRequestsymptoms);
+    } private void sendRequestAndPrintinfo() {
+        String info_url="https://api.infermedica.com/v2/info";
+        mRequestQueue = Volley.newRequestQueue(this);
+        stringRequest = new StringRequest(Request.Method.GET, info_url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    Log.i(TAG,obj.toString());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i(TAG, "Error: " + error.toString());
+            }
+        }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("App-Id", appid);
+                params.put("App-Key", appkey);
+
+                return params;
+            }
+        };
+        mRequestQueue.add(stringRequest);
+        Log.i(TAG,"hello" +stringRequest.toString());
+    } private void sendRequestandprinttheDiagnosis(){
+        mRequestQueuetheDiagnosis = Volley.newRequestQueue(this);
+
+
+
+        String diagnosis_url ="https://api.infermedica.com/v2/diagnosis";
+        JSONObject data = new JSONObject();
+        try {
+            data.put("sex", "female");
+            data.put("age", 23);
+            JSONArray evidence_array = new JSONArray();
+            JSONObject id = new JSONObject();
+            JSONObject id2 = new JSONObject();
+            JSONObject id3 = new JSONObject();
+
+
+            ///creating json for example evidence
+                id.put("id", "s_47");
+                id.put("choice_id","present");
+                id.put("initial",true);
+                id2.put("id", "s_22");
+                id2.put("choice_id","present");
+                id2.put("initial",true);
+                id3.put("id", "p_81");
+                id3.put("choice_id","absent");
+                evidence_array.put(id);
+                evidence_array.put(id2);
+                evidence_array.put(id3);
+
+
+            data.put("evidence", evidence_array);
+
+            JSONObject item = new JSONObject();
+
+            item.put("disable_groups", true);
+
+            data.put( "extras", item);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG,data.toString());
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, diagnosis_url, data,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Success Callback
+                        Log.i(TAG,"response" + response.toString());
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //Failure Callback
+                        Log.i(TAG,"error" + error.toString());
+
+                    }
+                })
+        {
+            /** Passing some request headers* */
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("App-Id", appid);
+                headers.put("App-Key", appkey);
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+// Adding the request to the queue along with a unique string tag
+      //  MyApplication.getInstance().addToRequestQueue(jsonObjectReq, "headerRequest");
+// Adding the request to the queue along with a unique string tag
+       // HomeActivity.getInstance().addToRequestQueue(jsonObjReq, "postRequest");
+        mRequestQueuetheDiagnosis.add(jsonObjReq);
+    }private void sendRequestAndPrintDiagnosis() {
+        String diagnosis_url ="https://api.infermedica.com/v2/diagnosis";
+        mRequestQueueDiagnosis = Volley.newRequestQueue(this);
+        stringRequestDiagnosis = new StringRequest(Request.Method.POST, diagnosis_url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    Log.i(TAG,obj.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace(); //log the error resulting from the request for diagnosis/debugging
-                Log.i("Volley Result", "" + error); //the response contains the result from the server, a json string or any other object returned by your server
-
+                Log.i(TAG, "Error: " + error.toString());
             }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> postMap = new HashMap<>();
-                postMap.put("Authorization", "Bearer "+ api_key+ ":"+ computedHash);
-
-                Log.i(TAG, postMap.toString());
-
-                //..... Add as many key value pairs in the map as necessary for your request
-                return postMap;
-
+        }
+        ){          protected Map<String, String> getParams() {
+                    Map<String, String> MyData = new HashMap<String, String>();
+                    MyData.put("App-Id", appid);
+                    MyData.put ("App-Key", appkey);
+                    MyData.put("Content-Type", "application/json");
+                    //Add the data you'd like to send to the server
+                    return MyData;
             }
         };
-//make the request to your server as indicated in your request url
-        Volley.newRequestQueue(getApplicationContext()).add(stringrequest);
-
+        mRequestQueueDiagnosis.add(stringRequestDiagnosis);
     }
-    private void sendRequestandPrintSymptoms(final String token_id) {
 
-        StringRequest stringrequest = new StringRequest(Request.Method.POST, symptom_url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.i("Volley Result", "" + response); //the response contains the result from the server, a json string or any other object returned by your server
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace(); //log the error resulting from the request for diagnosis/debugging
-                Log.i("Volley Result", "" + error); //the response contains the result from the server, a json string or any other object returned by your server
-
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> postMap = new HashMap<>();
-                postMap.put("token", token_id);
-                postMap.put("language", "en-gb");
-                Log.i(TAG, postMap.toString());
-
-                //..... Add as many key value pairs in the map as necessary for your request
-                return postMap;
-
-            }
-        };
-//make the request to your server as indicated in your request url
-        Volley.newRequestQueue(getApplicationContext()).add(stringrequest);
-
-    }
 }
 
 
