@@ -1,5 +1,6 @@
 package com.example.candy.diagnosisbot;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,9 @@ import java.util.List;
 import java.util.Map;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -63,6 +67,27 @@ public class HomeActivity extends AppCompatActivity {
     //    sendRequestAndPrintinfo();
        // sendRequestAndPrintsymptoms();
       //  sendRequestandprinttheDiagnosis();
+        Button buttonfemale = (Button) findViewById(R.id.button_female);
+        Button buttonmale = (Button) findViewById(R.id.button_male);
+        buttonfemale.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v) {
+
+
+               Intent i = new Intent(HomeActivity.this, AgeActivity.class);
+                i.putExtra("sex", "female");
+                startActivity(i);
+
+            }});
+        buttonmale.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v) {
+
+
+                    Intent i = new Intent(HomeActivity.this, AgeActivity.class);
+                    i.putExtra("sex", "male");
+                    startActivity(i);
+
+            }});
+
 
 
     }private void sendRequestAndPrintsymptoms() {
