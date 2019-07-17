@@ -5,10 +5,13 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 public class SymptomsActivity extends AppCompatActivity {
     private static final String TAG = SymptomsActivity.class.getName();
-
+    private static final String[] countries= new String[]{"Abdominal guarding","Ascites ","Chest ","cat"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -24,6 +27,11 @@ public class SymptomsActivity extends AppCompatActivity {
         String smoking =intent.getStringExtra("smoking");
         String diabetes =intent.getStringExtra("diabetes");
         Log.i(TAG,"chicken+" + sex+ age+ overweight+hypertension+highc+smoking+diabetes);
+
+
+        AutoCompleteTextView edittext= findViewById(R.id.actv);
+        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,countries);
+        edittext.setAdapter(adapter);
 
     }
     }
