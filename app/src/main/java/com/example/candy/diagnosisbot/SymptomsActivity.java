@@ -18,7 +18,12 @@ public class SymptomsActivity extends AppCompatActivity {
         Intent intent= getIntent();
         String sex =intent.getStringExtra("sex");
         String age =intent.getStringExtra("age");
-        Log.i(TAG,"chicken+" + sex+ age);
+        String overweight =intent.getStringExtra("overweight");
+        String hypertension =intent.getStringExtra("hypertension");
+        String highc =intent.getStringExtra("highc");
+        String smoking =intent.getStringExtra("smoking");
+        String diabetes =intent.getStringExtra("diabetes");
+        Log.i(TAG,"chicken+" + sex+ age+ overweight+hypertension+highc+smoking+diabetes);
 
     }
     }

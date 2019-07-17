@@ -26,7 +26,7 @@ public class AgeActivity extends AppCompatActivity {
          //       int number= Integer.parseInt(string_age);
                 Intent intent= getIntent();
                 String sex =intent.getStringExtra("sex");
-                Intent i = new Intent(AgeActivity.this, SymptomsActivity.class);
+                Intent i = new Intent(AgeActivity.this, RiskFactorsActivity.class);
                 i.putExtra("sex", sex);
                 i.putExtra("age", string_age);
                 startActivity(i);
