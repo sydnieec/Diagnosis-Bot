@@ -21,6 +21,8 @@
         <activity android:name=".AgeActivity" />
         <activity android:name=".RiskFactorsActivity"/>
         <activity android:name=".RiskFactors2Activity"/>
+        <activity android:name=".ChatBotActivity" />
+
         <activity android:name=".SymptomsActivity" />
 
 

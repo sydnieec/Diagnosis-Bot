@@ -40,7 +40,7 @@ public class RiskFactors2Activity extends AppCompatActivity {
                 String hypertension =intent.getStringExtra("hypertension");
                 String highc =intent.getStringExtra("highc");
 
-                Intent i = new Intent(RiskFactors2Activity.this, SymptomsActivity.class);
+                Intent i = new Intent(RiskFactors2Activity.this, ChatBotActivity.class);
                 i.putExtra("sex", sex);
                 i.putExtra("age", age);
                 i.putExtra("overweight", overweight);

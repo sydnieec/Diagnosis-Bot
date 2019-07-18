@@ -42,8 +42,6 @@ import android.widget.Toast;
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = HomeActivity.class.getName();
 
-    private String login_url = "https://sandbox-authservice.priaid.ch/login";
-    private  String  api_key = "sydnie.chau@gmail.com";
     private String appid= "76a0a013";
     private String appkey="47d95003e43862338850d1f7b8cd62ec";
    // private String secret_key = "Tk9y7Y3GtSa4i5M6A";
