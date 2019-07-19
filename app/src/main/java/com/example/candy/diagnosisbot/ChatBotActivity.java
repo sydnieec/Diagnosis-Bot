@@ -22,6 +22,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,12 +45,15 @@ public class ChatBotActivity extends AppCompatActivity {
     private MessageAdapter adapter;
     private List<messages> mMessageList;
     int l= 0;
+    String step="beginning";
     RequestQueue mRequestQueuetheDiagnosis;
     String response_overweight;
     String response_hypertension;
     String response_highc;
     String response_smoking;
     String response_diabetes;
+    String repeat= "no";
+    int numberofquestions=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,14 +132,14 @@ public class ChatBotActivity extends AppCompatActivity {
         lvMessages.setAdapter(adapter);
 
         l++;
-        mMessageList.add(new messages(l, "Diagnosis Bot","Welcome to Diagnosis Bot! Please describe your symptoms, and enter 'stop' when you are done to begin interview" ));
+        mMessageList.add(new messages(l, "Diagnosis Bot","Welcome to Diagnosis Bot! Please describe your symptoms, and enter 'I'm done' when you are done to begin interview" ));
         adapter = new MessageAdapter(getApplicationContext(), mMessageList);
         lvMessages.setAdapter(adapter);
         lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
 
         send_button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                if (!message_edit.getText().toString().equals("Stop")) {
+                if (!message_edit.getText().toString().equals("I'm done") && step.equals("beginning") ) {
                     parsemessage(message_edit.getText().toString(), new symptomsinterface() {
                         @Override
                         public void onSuccess(String result) {
@@ -156,7 +162,107 @@ public class ChatBotActivity extends AppCompatActivity {
                     adapter = new MessageAdapter(getApplicationContext(), mMessageList);
                     lvMessages.setAdapter(adapter);
                     lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
-                } else {
+                }else if (message_edit.getText().toString().equals("I'm done")){
+                    step="step two";
+                    repeat="no";
+
+                    l++;
+                    mMessageList.add(new messages(l, "You",message_edit.getText().toString()));
+                    adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                    lvMessages.setAdapter(adapter);
+                    lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+                    message_edit.setText("");
+
+                    sendRequestandprinttheDiagnosis(sex, int_age,array_of_ids, array_of_choiceid , new diagnosisinterface() {
+                        @Override
+                        public void onSuccess(JSONObject result) {
+
+                            try {
+                                String question= result.getJSONObject("question").getString("text");
+                                String new_id= result.getJSONObject("question").getJSONArray("items").getJSONObject(0).getString("id");
+
+                                array_of_ids.add(new_id);
+
+
+                                l++;
+                                mMessageList.add(new messages(l, "Diagnosis Bot",question + new_id));
+                                adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                                lvMessages.setAdapter(adapter);
+                                lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+
+                        }
+                    });
+
+
+
+
+
+                } else if (step.equals("step two")){
+                    numberofquestions++;
+                    if (numberofquestions>5){
+                        step="step 3";
+                    }
+                    if (message_edit.getText().toString().equals(("Yes"))){
+                        array_of_choiceid.add("present");
+                    }
+                    else if (message_edit.getText().toString().equals("No")){
+                        array_of_choiceid.add("absent");
+                    } else {
+                        array_of_choiceid.add("unknown");
+
+                    }
+                    l++;
+                    mMessageList.add(new messages(l, "You",message_edit.getText().toString()));
+                    adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                    lvMessages.setAdapter(adapter);
+                    lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+                    message_edit.setText("");
+
+                    Log.i(TAG, "bitch lasagna" + array_of_ids.toString() + " "+array_of_choiceid);
+                    sendRequestandprinttheDiagnosis(sex, int_age,array_of_ids, array_of_choiceid , new diagnosisinterface() {
+                        @Override
+                        public void onSuccess(JSONObject result) {
+
+                            try {
+                                String question= result.getJSONObject("question").getString("text");
+                                String new_id= result.getJSONObject("question").getJSONArray("items").getJSONObject(0).getString("id");
+
+                                array_of_ids.add(new_id);
+
+
+                                l++;
+                                mMessageList.add(new messages(l, "Diagnosis Bot",question + new_id));
+                                adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                                lvMessages.setAdapter(adapter);
+                                lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+
+                        }
+                    });
+
+
+                }
+                else if ((message_edit.getText().toString().equals("I'm finished")) || (step.equals("step 3"))) {
+
+                    if (message_edit.getText().toString().equals(("Yes"))){
+                        array_of_choiceid.add("present");
+                    }
+                    else if (message_edit.getText().toString().equals("No")){
+                        array_of_choiceid.add("absent");
+                    } else {
+                        array_of_choiceid.add("unknown");
+
+                    }
+
                     l++;
                     mMessageList.add(new messages(l, "You",message_edit.getText().toString()));
                     adapter = new MessageAdapter(getApplicationContext(), mMessageList);
@@ -165,14 +271,26 @@ public class ChatBotActivity extends AppCompatActivity {
                     message_edit.setText("");
 
 
-                    sendRequestandprinttheDiagnosis(sex, int_age,array_of_ids, array_of_choiceid , new symptomsinterface() {
+                    sendRequestandprinttheDiagnosis(sex, int_age,array_of_ids, array_of_choiceid , new diagnosisinterface() {
                         @Override
-                        public void onSuccess(String result) {
-                            l++;
-                            mMessageList.add(new messages(l, "Diagnosis Bot",result));
-                            adapter = new MessageAdapter(getApplicationContext(), mMessageList);
-                            lvMessages.setAdapter(adapter);
-                            lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+                        public void onSuccess(JSONObject result) {
+
+                            try {
+                                arraydiagnosis = result.getJSONArray("conditions");
+                                String iddiagnosis = arraydiagnosis.getJSONObject(0).getString("name");
+                                Log.i(TAG,"aSDASD" +iddiagnosis);
+                                //         callback.onSuccess((iddiagnosis));
+
+                                l++;
+                                mMessageList.add(new messages(l, "Diagnosis Bot",iddiagnosis));
+                                adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                                lvMessages.setAdapter(adapter);
+                                lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
 
                         }
                     });
@@ -247,7 +365,7 @@ public class ChatBotActivity extends AppCompatActivity {
         mRequestQueuetheDiagnosis.add(jsonObjReq);
 
     }
-    private void sendRequestandprinttheDiagnosis(String sex, Integer age, List<String> listofids, List<String> listofchoiceids,  symptomsinterface callback){
+    private void sendRequestandprinttheDiagnosis(String sex, Integer age, List<String> listofids, List<String> listofchoiceids,   diagnosisinterface callback){
         mRequestQueuetheDiagnosis = Volley.newRequestQueue(this);
         String diagnosis_url ="https://api.infermedica.com/v2/diagnosis";
         JSONObject data = new JSONObject();
@@ -295,13 +413,14 @@ public class ChatBotActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        callback.onSuccess(response);
                         //Success Callback
                         Log.i(TAG,"response" + response.toString());
                         try {
                             arraydiagnosis = response.getJSONArray("conditions");
                             String iddiagnosis = arraydiagnosis.getJSONObject(0).getString("name");
-                            Log.i(TAG,"aSDASD" +iddiagnosis);
-                            callback.onSuccess((iddiagnosis));
+                     //       Log.i(TAG,"aSDASD" +iddiagnosis);
+                   //         callback.onSuccess((iddiagnosis));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
