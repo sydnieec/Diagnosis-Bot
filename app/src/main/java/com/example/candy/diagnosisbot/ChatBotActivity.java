@@ -1,5 +1,6 @@
 package com.example.candy.diagnosisbot;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -21,7 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -32,6 +36,10 @@ public class ChatBotActivity extends AppCompatActivity {
     JSONArray array = null;
     String choiceId = null;
     String id = null;
+    private ListView lvMessages;
+    private MessageAdapter adapter;
+    private List<messages> mMessageList;
+    int l= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +48,89 @@ public class ChatBotActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         final EditText message_edit = (EditText) findViewById(R.id.editText_send);
         final Button send_button = (Button) findViewById(R.id.button_enter);
+        List<String> array_of_ids = new ArrayList<String>();
+
+        Intent intent= getIntent();
+        String sex =intent.getStringExtra("sex");
+        String age =intent.getStringExtra("age");
+        int int_age = Integer.parseInt(age);
+        String overweight =intent.getStringExtra("overweight");
+        if (overweight.equals("Yes")){
+            String response_overweight="present";
+        }else if (overweight.equals("No")){
+            String response_overweight="absent";
+        }else {
+            String response_overweight="idk";
+        }
+        String hypertension =intent.getStringExtra("hypertension");
+        if (hypertension.equals("Yes")){
+            String response_hypertension="present";
+        }else if (hypertension.equals("No")){
+            String resposne_hypertension="absent";
+        }else {
+            String response_hyptension="idk";
+        }
+        String highc =intent.getStringExtra("highc");
+        if (highc.equals("Yes")){
+            String response_highc="present";
+        }else if (highc.equals("No")){
+            String response_highc="absent";
+        }else {
+            String reponse_highc="idk";
+        }
+        String smoking =intent.getStringExtra("smoking");
+        if (smoking.equals("Yes")){
+            String response_smoking="present";
+        }else if (smoking.equals("No")){
+            String response_smoking="absent";
+        }else {
+            String reponse_smoking="idk";
+        }
+        String diabetes =intent.getStringExtra("diabetes");
+        if (diabetes.equals("Yes")){
+            String response_diabetes="present";
+        }else if (diabetes.equals("No")){
+            String response_diabetes="absent";
+        }else {
+            String reponse_diabetes="idk";
+        }
+
+        lvMessages = (ListView) findViewById(R.id.MessageListView);
+
+        mMessageList = new ArrayList<>();
+
+        //Init Adapter
+        adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+        lvMessages.setAdapter(adapter);
+
+        l++;
+        mMessageList.add(new messages(l, "Diagnosis Bot","Welcome to Diagnosis Bot! Please describe your symptoms, and enter 'stop' when you are done to begin interview" ));
+        adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+        lvMessages.setAdapter(adapter);
+        lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+
         send_button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 parsemessage(message_edit.getText().toString(),new symptomsinterface(){
                     @Override
                     public void onSuccess(String result){
+
                         Log.i(TAG,"hellostop"+result);
+                        array_of_ids.add(result);
                     }
                 });
+                l++;
+                mMessageList.add(new messages(l, "You",message_edit.getText().toString()));
+                adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                lvMessages.setAdapter(adapter);
+                lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
                 message_edit.setText("");
+
+                l++;
+                mMessageList.add(new messages(l, "Diagnosis Bot","Noted, please describe more symptoms for more accuracy, enter 'stop' when done"));
+                adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                lvMessages.setAdapter(adapter);
+                lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
 
             }
         });
@@ -83,7 +165,6 @@ public class ChatBotActivity extends AppCompatActivity {
 
                             //        Log.i(TAG,id);
                             //      messageedit.setText(id);
-               //             getText.givetext(id);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
