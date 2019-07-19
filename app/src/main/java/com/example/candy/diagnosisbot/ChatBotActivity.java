@@ -34,12 +34,20 @@ public class ChatBotActivity extends AppCompatActivity {
     private String appid = "76a0a013";
     private String appkey = "47d95003e43862338850d1f7b8cd62ec";
     JSONArray array = null;
+    JSONArray arraydiagnosis = null;
+
     String choiceId = null;
     String id = null;
     private ListView lvMessages;
     private MessageAdapter adapter;
     private List<messages> mMessageList;
     int l= 0;
+    RequestQueue mRequestQueuetheDiagnosis;
+    String response_overweight;
+    String response_hypertension;
+    String response_highc;
+    String response_smoking;
+    String response_diabetes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,7 @@ public class ChatBotActivity extends AppCompatActivity {
         final EditText message_edit = (EditText) findViewById(R.id.editText_send);
         final Button send_button = (Button) findViewById(R.id.button_enter);
         List<String> array_of_ids = new ArrayList<String>();
+        List<String> array_of_choiceid = new ArrayList<String>();
 
         Intent intent= getIntent();
         String sex =intent.getStringExtra("sex");
@@ -56,44 +65,57 @@ public class ChatBotActivity extends AppCompatActivity {
         int int_age = Integer.parseInt(age);
         String overweight =intent.getStringExtra("overweight");
         if (overweight.equals("Yes")){
-            String response_overweight="present";
+             response_overweight="present";
         }else if (overweight.equals("No")){
-            String response_overweight="absent";
+             response_overweight="absent";
         }else {
-            String response_overweight="idk";
+             response_overweight="unknown";
         }
+        array_of_ids.add("p_7");
+        array_of_choiceid.add(response_overweight);
+
         String hypertension =intent.getStringExtra("hypertension");
         if (hypertension.equals("Yes")){
-            String response_hypertension="present";
+             response_hypertension="present";
         }else if (hypertension.equals("No")){
-            String resposne_hypertension="absent";
+             response_hypertension="absent";
         }else {
-            String response_hyptension="idk";
+             response_hypertension="unknown";
         }
+        array_of_ids.add("p_9");
+        array_of_choiceid.add(response_hypertension);
+
         String highc =intent.getStringExtra("highc");
         if (highc.equals("Yes")){
-            String response_highc="present";
+             response_highc="present";
         }else if (highc.equals("No")){
-            String response_highc="absent";
+             response_highc="absent";
         }else {
-            String reponse_highc="idk";
+             response_highc="unknown";
         }
+        array_of_ids.add("p_10");
+        array_of_choiceid.add(response_highc);
+
         String smoking =intent.getStringExtra("smoking");
         if (smoking.equals("Yes")){
-            String response_smoking="present";
+             response_smoking="present";
         }else if (smoking.equals("No")){
-            String response_smoking="absent";
+             response_smoking="absent";
         }else {
-            String reponse_smoking="idk";
+             response_smoking="unknown";
         }
+        array_of_ids.add("p_28");
+        array_of_choiceid.add(response_smoking);
+
         String diabetes =intent.getStringExtra("diabetes");
         if (diabetes.equals("Yes")){
             String response_diabetes="present";
         }else if (diabetes.equals("No")){
             String response_diabetes="absent";
         }else {
-            String reponse_diabetes="idk";
+            String response_diabetes="unknown";
         }
+
 
         lvMessages = (ListView) findViewById(R.id.MessageListView);
 
@@ -111,26 +133,54 @@ public class ChatBotActivity extends AppCompatActivity {
 
         send_button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                parsemessage(message_edit.getText().toString(),new symptomsinterface(){
-                    @Override
-                    public void onSuccess(String result){
+                if (!message_edit.getText().toString().equals("Stop")) {
+                    parsemessage(message_edit.getText().toString(), new symptomsinterface() {
+                        @Override
+                        public void onSuccess(String result) {
 
-                        Log.i(TAG,"hellostop"+result);
-                        array_of_ids.add(result);
-                    }
-                });
-                l++;
-                mMessageList.add(new messages(l, "You",message_edit.getText().toString()));
-                adapter = new MessageAdapter(getApplicationContext(), mMessageList);
-                lvMessages.setAdapter(adapter);
-                lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
-                message_edit.setText("");
+                            Log.i(TAG, "hellostop" + result);
+                            array_of_ids.add(result);
+                            array_of_choiceid.add("present");
+                        }
+                    });
 
-                l++;
-                mMessageList.add(new messages(l, "Diagnosis Bot","Noted, please describe more symptoms for more accuracy, enter 'stop' when done"));
-                adapter = new MessageAdapter(getApplicationContext(), mMessageList);
-                lvMessages.setAdapter(adapter);
-                lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+                    l++;
+                    mMessageList.add(new messages(l, "You",message_edit.getText().toString()));
+                    adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                    lvMessages.setAdapter(adapter);
+                    lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+                    message_edit.setText("");
+
+                    l++;
+                    mMessageList.add(new messages(l, "Diagnosis Bot","Noted, please describe more symptoms for more accuracy, enter 'stop' when done"));
+                    adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                    lvMessages.setAdapter(adapter);
+                    lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+                } else {
+                    l++;
+                    mMessageList.add(new messages(l, "You",message_edit.getText().toString()));
+                    adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                    lvMessages.setAdapter(adapter);
+                    lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+                    message_edit.setText("");
+
+
+                    sendRequestandprinttheDiagnosis(sex, int_age,array_of_ids, array_of_choiceid , new symptomsinterface() {
+                        @Override
+                        public void onSuccess(String result) {
+                            l++;
+                            mMessageList.add(new messages(l, "Diagnosis Bot",result));
+                            adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                            lvMessages.setAdapter(adapter);
+                            lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+
+                        }
+                    });
+                  //  sendRequestandprinttheDiagnosis(sex,int_age,array_of_ids,array_of_choiceid);
+                }
+
+
+
 
             }
         });
@@ -197,7 +247,88 @@ public class ChatBotActivity extends AppCompatActivity {
         mRequestQueuetheDiagnosis.add(jsonObjReq);
 
     }
+    private void sendRequestandprinttheDiagnosis(String sex, Integer age, List<String> listofids, List<String> listofchoiceids,  symptomsinterface callback){
+        mRequestQueuetheDiagnosis = Volley.newRequestQueue(this);
+        String diagnosis_url ="https://api.infermedica.com/v2/diagnosis";
+        JSONObject data = new JSONObject();
+        try {
+            data.put("sex", sex);
+            data.put("age",  age);
+            JSONArray evidence_array = new JSONArray();
+            JSONObject id = new JSONObject();
+            JSONObject id2 = new JSONObject();
+            JSONObject id3 = new JSONObject();
 
+            ///creating json for example evidence
+            id.put("id", "s_47");
+            id.put("choice_id","present");
+            id.put("initial",true);
+            id2.put("id", "s_22");
+            id2.put("choice_id","present");
+            id2.put("initial",true);
+            id3.put("id", "p_81");
+            id3.put("choice_id","absent");
+    //        evidence_array.put(id);
+     //       evidence_array.put(id2);
+     //       evidence_array.put(id3);
+
+            for (int j=0; j<listofids.size(); j++) {
+                    JSONObject id4=new JSONObject();
+                    id4.put("id",listofids.get(j));
+                    id4.put("choice_id",listofchoiceids.get(j));
+                    id4.put("initial",true);
+                    evidence_array.put(id4);
+            }
+            data.put("evidence", evidence_array);
+
+            JSONObject item = new JSONObject();
+            item.put("disable_groups", true);
+            data.put( "extras", item);
+            Log.i(TAG,data.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG,data.toString());
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, diagnosis_url, data,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Success Callback
+                        Log.i(TAG,"response" + response.toString());
+                        try {
+                            arraydiagnosis = response.getJSONArray("conditions");
+                            String iddiagnosis = arraydiagnosis.getJSONObject(0).getString("name");
+                            Log.i(TAG,"aSDASD" +iddiagnosis);
+                            callback.onSuccess((iddiagnosis));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //Failure Callback
+                        Log.i(TAG,"error" + error.toString());
+
+                    }
+                })
+        {
+            /** Passing some request headers* */
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("App-Id", appid);
+                headers.put("App-Key", appkey);
+                //     headers.put("Content-Type", "application/json");
+                return headers; }
+        };
+
+        mRequestQueuetheDiagnosis.add(jsonObjReq);
+    }
 
 
 
