@@ -13,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -23,13 +24,14 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class ChatBotActivity extends AppCompatActivity {
     private static final String TAG = ChatBotActivity.class.getName();
     private String appid = "76a0a013";
     private String appkey = "47d95003e43862338850d1f7b8cd62ec";
-    JSONArray array= null;
-    String choiceId=null;
-    String id=null;
+    JSONArray array = null;
+    String choiceId = null;
+    String id = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +40,25 @@ public class ChatBotActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         final EditText message_edit = (EditText) findViewById(R.id.editText_send);
         final Button send_button = (Button) findViewById(R.id.button_enter);
-        send_button.setOnClickListener(new Button.OnClickListener(){
+        send_button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                    final String id=parsemessage(message_edit.getText().toString());
-                    Log.i(TAG,"hellostop" +id );
-                    message_edit.setText("");
+                parsemessage(message_edit.getText().toString(),new symptomsinterface(){
+                    @Override
+                    public void onSuccess(String result){
+                        Log.i(TAG,"hellostop"+result);
+                    }
+                });
+                message_edit.setText("");
+
             }
-    });
+        });
+
     }
 
-    public String parsemessage(String message) {
+    public void parsemessage(String message, final symptomsinterface callback) {
         RequestQueue mRequestQueuetheDiagnosis = Volley.newRequestQueue(this);
         String parse_url = "https://api.infermedica.com/v2/parse";
-        String idd="fake";
+        String idd = "fake";
         JSONObject datatest = new JSONObject();
         try {
             datatest.put("text", message);
@@ -66,19 +74,22 @@ public class ChatBotActivity extends AppCompatActivity {
 
                         try {
                             Log.i(TAG, "responsed" + response.toString());
-                            Log.i(TAG,"ok");
-                            array=response.getJSONArray("mentions");
-                       //     String choiceId= array.getJSONObject(0).getString("choice_id");
-                       //     String commonName= array.getJSONObject(0).getString("common_name");
-                       //     Log.i(TAG,choiceId+commonName);
-                            String id= array.getJSONObject(0).getString("id");
-                    //        Log.i(TAG,id);
+                            array = response.getJSONArray("mentions");
+                            //     String choiceId= array.getJSONObject(0).getString("choice_id");
+                            //     String commonName= array.getJSONObject(0).getString("common_name");
+                            //     Log.i(TAG,choiceId+commonName);
+                            String id = array.getJSONObject(0).getString("id");
+                            callback.onSuccess(id);
+
+                            //        Log.i(TAG,id);
+                            //      messageedit.setText(id);
+               //             getText.givetext(id);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                      ///  Log.i(TAG, "responsed" + response.toString());
-              //          Log.i(TAG,id);
+
+                        //          Log.i(TAG,id);
                     }
                 },
                 new Response.ErrorListener() {
@@ -101,16 +112,16 @@ public class ChatBotActivity extends AppCompatActivity {
                 return headers;
             }
         };
-// Adding the request to the queue along with a unique string tag
-        //  MyApplication.getInstance().addToRequestQueue(jsonObjectReq, "headerRequest");
-// Adding the request to the queue along with a unique string tag
-        //    HomeActivity.getInstance(this).addToRequestQueue(jsonObjReq, "postRequest");
+
         mRequestQueuetheDiagnosis.add(jsonObjReq);
-      //  Log.i(TAG,id);
-      //  return id;
-        return "gsdfs";
 
     }
+
+
+
+
+
+
 
 }
 
