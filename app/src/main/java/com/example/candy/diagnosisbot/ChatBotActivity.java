@@ -278,14 +278,26 @@ public class ChatBotActivity extends AppCompatActivity {
                             try {
                                 arraydiagnosis = result.getJSONArray("conditions");
                                 String iddiagnosis = arraydiagnosis.getJSONObject(0).getString("name");
+                                String probablity = arraydiagnosis.getJSONObject(0).getString("probability");
+
                                 Log.i(TAG,"aSDASD" +iddiagnosis);
                                 //         callback.onSuccess((iddiagnosis));
 
                                 l++;
-                                mMessageList.add(new messages(l, "Diagnosis Bot",iddiagnosis));
+                                mMessageList.add(new messages(l, "Diagnosis Bot","You most likely have " +iddiagnosis +" with a  " + probablity +"%" + "probability."));
                                 adapter = new MessageAdapter(getApplicationContext(), mMessageList);
                                 lvMessages.setAdapter(adapter);
                                 lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+
+                                String iddiagnosis2 = arraydiagnosis.getJSONObject(1).getString("name");
+                                String probablity2 = arraydiagnosis.getJSONObject(1).getString("probability");
+
+                                l++;
+                                mMessageList.add(new messages(l, "Diagnosis Bot","Another condition I calculated is: " +iddiagnosis2 +" with a  " + probablity2 +"%" + "probability."));
+                                adapter = new MessageAdapter(getApplicationContext(), mMessageList);
+                                lvMessages.setAdapter(adapter);
+                                lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
