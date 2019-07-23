@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff">
 
     <ListView
         android:id="@+id/MessageListView"
         style="@style/Widget.AppCompat.Light.ListView.DropDown"
         android:layout_width="match_parent"
-        android:layout_height="463dp"
+        android:layout_height="477dp"
         android:layout_marginBottom="8dp"
         android:stackFromBottom="false"
         android:transcriptMode="normal"
@@ -47,10 +48,12 @@
         android:layout_marginTop="4dp"
         android:text="Send"
         android:textColor="@color/colorPrimaryDark"
+        android:background="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/editText_send"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        style="?android:attr/borderlessButtonStyle" />
 </android.support.constraint.ConstraintLayout>

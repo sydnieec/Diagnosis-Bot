@@ -132,14 +132,14 @@ public class ChatBotActivity extends AppCompatActivity {
         lvMessages.setAdapter(adapter);
 
         l++;
-        mMessageList.add(new messages(l, "Diagnosis Bot","Welcome to Diagnosis Bot! Please describe your symptoms, and enter 'I'm done' when you are done to begin interview" ));
+        mMessageList.add(new messages(l, "Diagnosis Bot","Welcome to Diagnosis Bot! Please start by describing your symptoms clearly one at a time to me." ));
         adapter = new MessageAdapter(getApplicationContext(), mMessageList);
         lvMessages.setAdapter(adapter);
         lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
 
         send_button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                if (!message_edit.getText().toString().equals("I'm done") && step.equals("beginning") ) {
+                if (!message_edit.getText().toString().equals("I'm done.") && step.equals("beginning") ) {
                     parsemessage(message_edit.getText().toString(), new symptomsinterface() {
                         @Override
                         public void onSuccess(String result) {
@@ -158,11 +158,11 @@ public class ChatBotActivity extends AppCompatActivity {
                     message_edit.setText("");
 
                     l++;
-                    mMessageList.add(new messages(l, "Diagnosis Bot","Noted, please describe more symptoms for more accuracy, enter 'stop' when done"));
+                    mMessageList.add(new messages(l, "Diagnosis Bot","Noted, please describe more symptoms for more accuracy, enter 'I'm done.' when done."));
                     adapter = new MessageAdapter(getApplicationContext(), mMessageList);
                     lvMessages.setAdapter(adapter);
                     lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
-                }else if (message_edit.getText().toString().equals("I'm done")){
+                }else if (message_edit.getText().toString().equals("I'm done.")){
                     step="step two";
                     repeat="no";
 
@@ -185,7 +185,7 @@ public class ChatBotActivity extends AppCompatActivity {
 
 
                                 l++;
-                                mMessageList.add(new messages(l, "Diagnosis Bot",question + new_id));
+                                mMessageList.add(new messages(l, "Diagnosis Bot",question ));
                                 adapter = new MessageAdapter(getApplicationContext(), mMessageList);
                                 lvMessages.setAdapter(adapter);
                                 lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
@@ -207,10 +207,10 @@ public class ChatBotActivity extends AppCompatActivity {
                     if (numberofquestions>5){
                         step="step 3";
                     }
-                    if (message_edit.getText().toString().equals(("Yes"))){
+                    if (message_edit.getText().toString().equals(("Yes."))){
                         array_of_choiceid.add("present");
                     }
-                    else if (message_edit.getText().toString().equals("No")){
+                    else if (message_edit.getText().toString().equals("No.")){
                         array_of_choiceid.add("absent");
                     } else {
                         array_of_choiceid.add("unknown");
@@ -223,7 +223,6 @@ public class ChatBotActivity extends AppCompatActivity {
                     lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
                     message_edit.setText("");
 
-                    Log.i(TAG, "bitch lasagna" + array_of_ids.toString() + " "+array_of_choiceid);
                     sendRequestandprinttheDiagnosis(sex, int_age,array_of_ids, array_of_choiceid , new diagnosisinterface() {
                         @Override
                         public void onSuccess(JSONObject result) {
@@ -236,7 +235,7 @@ public class ChatBotActivity extends AppCompatActivity {
 
 
                                 l++;
-                                mMessageList.add(new messages(l, "Diagnosis Bot",question + new_id));
+                                mMessageList.add(new messages(l, "Diagnosis Bot",question ));
                                 adapter = new MessageAdapter(getApplicationContext(), mMessageList);
                                 lvMessages.setAdapter(adapter);
                                 lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
@@ -284,7 +283,7 @@ public class ChatBotActivity extends AppCompatActivity {
                                 //         callback.onSuccess((iddiagnosis));
 
                                 l++;
-                                mMessageList.add(new messages(l, "Diagnosis Bot","You most likely have " +iddiagnosis +" with a  " + probablity +"%" + "probability."));
+                                mMessageList.add(new messages(l, "Diagnosis Bot","You most likely have " +iddiagnosis +" with a  " + probablity +"% " + "probability."));
                                 adapter = new MessageAdapter(getApplicationContext(), mMessageList);
                                 lvMessages.setAdapter(adapter);
                                 lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);
@@ -293,7 +292,7 @@ public class ChatBotActivity extends AppCompatActivity {
                                 String probablity2 = arraydiagnosis.getJSONObject(1).getString("probability");
 
                                 l++;
-                                mMessageList.add(new messages(l, "Diagnosis Bot","Another condition I calculated is: " +iddiagnosis2 +" with a  " + probablity2 +"%" + "probability."));
+                                mMessageList.add(new messages(l, "Diagnosis Bot","Another condition I calculated is: " +iddiagnosis2 +" with a  " + probablity2 +"% " + "probability."));
                                 adapter = new MessageAdapter(getApplicationContext(), mMessageList);
                                 lvMessages.setAdapter(adapter);
                                 lvMessages.setSelection(lvMessages.getAdapter().getCount()-1);

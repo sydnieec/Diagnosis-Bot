@@ -3,70 +3,151 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    android:background="#f7e6c8"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
     android:theme="@style/AppTheme"
+
     tools:context=".HomeActivity">
 
 
     <TextView
+        android:id="@+id/textView7"
+        android:layout_width="277dp"
+        android:layout_height="65dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/roundedbutton_db"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/button_female"
+        app:layout_constraintEnd_toEndOf="@+id/button_female"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button_female"
+        app:layout_constraintVertical_bias="0.342" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="277dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/roundedbutton_db"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/button_male"
+        app:layout_constraintEnd_toEndOf="@+id/button_male"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button_male"
+        app:layout_constraintVertical_bias="0.517" />
+
+
+    <TextView
         android:id="@+id/textViewwelcome"
-        android:layout_width="370dp"
-        android:layout_height="49dp"
+        android:layout_width="347dp"
+        android:layout_height="81dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Welcome to Diagnosis Bot! To begin your anonymous health checkup, please answer a few questions about yourself. "
-        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif"
+        android:text="Welcome to Diagnosis Bot! To begin your anonymous health checkup, please answer a few questions about yourself! "
+        android:textColor="#000000"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="192dp"
+        android:layout_height="36dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Please select your gender"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewwelcome"
-        app:layout_constraintVertical_bias="0.07" />
+        app:layout_constraintVertical_bias="0.173" />
 
     <Button
         android:id="@+id/button_male"
-        android:layout_width="211dp"
-        android:layout_height="43dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="258dp"
+        android:layout_height="39dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Male"
+        android:background="#ffffff"
+        android:backgroundTint="#ffffff"
+        android:text="   Male"
+        android:textAlignment="textStart"
         android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/button_female"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintHorizontal_bias="0.072"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button_female"
-        android:layout_width="207dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="260dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="255dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="192dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Female"
+        android:background="#ffffff"
+        android:text="   Female"
+        android:textAlignment="textStart"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintHorizontal_bias="0.056"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button_female"
+        app:layout_constraintEnd_toEndOf="@+id/textView7"
+        app:layout_constraintHorizontal_bias="0.976"
+        app:layout_constraintStart_toStartOf="@+id/button_female"
+        app:layout_constraintTop_toTopOf="@+id/button_female"
+        app:srcCompat="@drawable/femaleicon" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="45dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="@+id/textView6"
+        app:layout_constraintHorizontal_bias="0.985"
+        app:layout_constraintStart_toStartOf="@+id/button_male"
+        app:layout_constraintTop_toTopOf="@+id/button_male"
+        app:layout_constraintVertical_bias="0.4"
+        app:srcCompat="@drawable/malesign" />
+
 </android.support.constraint.ConstraintLayout>
