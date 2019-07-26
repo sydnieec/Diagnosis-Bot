@@ -8,3 +8,7 @@ This project is written in Java and uses Infermedica API in order to analyze the
 
 
 The demo for Diagnosis Bot can be found [here.](https://drive.google.com/file/d/1Vj_6-begVZpEExYLW9VPB2oRSggkcLLS/view?usp=sharing)
+
+![DiagnosisBotSymptoms](https://user-images.githubusercontent.com/40672145/61983024-bcf6f080-afcc-11e9-98cf-4bfa59401023.PNG)
+![DiagnosisBotquestions](https://user-images.githubusercontent.com/40672145/61983030-c08a7780-afcc-11e9-9963-c24548fc71e6.PNG)
+![DiagnosisBotDiagnosis](https://user-images.githubusercontent.com/40672145/61983032-c2ecd180-afcc-11e9-8d42-029e1f4febdd.PNG)
