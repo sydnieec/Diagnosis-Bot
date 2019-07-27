@@ -9,11 +9,9 @@ This project is written in Java and uses Infermedica API in order to analyze the
 
 The demo for Diagnosis Bot can be found [here.](https://drive.google.com/file/d/1Vj_6-begVZpEExYLW9VPB2oRSggkcLLS/view?usp=sharing)
 
-
-![Screenshot_20190726-222641](https://user-images.githubusercontent.com/40672145/61988881-8f726d00-aff5-11e9-9e41-c243e33af8b2.png)
-![Screenshot_20190726-222657](https://user-images.githubusercontent.com/40672145/61988882-900b0380-aff5-11e9-918a-c2c46f4083c4.png)
-![Screenshot_20190726-222704](https://user-images.githubusercontent.com/40672145/61988883-900b0380-aff5-11e9-8c59-f18ea47a5810.png)
-![Screenshot_20190726-222937](https://user-images.githubusercontent.com/40672145/61988884-900b0380-aff5-11e9-9141-738b149e7146.png)
-![Screenshot_20190726-222958](https://user-images.githubusercontent.com/40672145/61988885-900b0380-aff5-11e9-99cc-f3215929798f.png)
-![Screenshot_20190726-222625](https://user-images.githubusercontent.com/40672145/61988886-900b0380-aff5-11e9-8719-e4e5b56c27e4.png)
+![screenshotsmall1](https://user-images.githubusercontent.com/40672145/61988973-f5132900-aff6-11e9-8a2b-b514a13283fb.png)
+![screenshot2](https://user-images.githubusercontent.com/40672145/61988974-f5132900-aff6-11e9-9320-76e73f0557b4.png)
+![screenshot3](https://user-images.githubusercontent.com/40672145/61988975-f5abbf80-aff6-11e9-983d-cc0a5a2d0be1.png)
+![screenshot4](https://user-images.githubusercontent.com/40672145/61988976-f5abbf80-aff6-11e9-9f36-9e9e0521acf4.png)
+![screenshot5](https://user-images.githubusercontent.com/40672145/61988972-f5132900-aff6-11e9-8a8c-fefa459f7cc5.png)
 
