@@ -7,7 +7,7 @@ After entering basic user information, Diagnosis Bot will begin an interview wit
 This project is written in Java and uses Infermedica API in order to analyze the user’s data and return a list of relevant symptoms and conditions.    
 
 
-The demo for Diagnosis Bot can be found [here.](https://drive.google.com/file/d/1Vj_6-begVZpEExYLW9VPB2oRSggkcLLS/view?usp=sharing)
+The demo for Diagnosis Bot can be found [here.](https://www.youtube.com/watch?v=sxsP0BuF8LE&feature=youtu.be)
 
 ![screenshotsmall1](https://user-images.githubusercontent.com/40672145/61988973-f5132900-aff6-11e9-8a2b-b514a13283fb.png)
 ![screenshot2](https://user-images.githubusercontent.com/40672145/61988974-f5132900-aff6-11e9-9320-76e73f0557b4.png)
